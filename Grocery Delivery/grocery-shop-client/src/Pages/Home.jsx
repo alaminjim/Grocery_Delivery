@@ -1,4 +1,5 @@
 import BestSeller from "../Components/BestSeller";
+import BottomBanner from "../Components/BottomBanner";
 import Categories from "../Components/Categories";
 import MainBanner from "../Components/MainBanner";
 
@@ -9,6 +10,7 @@ const Home = () => {
         <MainBanner></MainBanner>
         <Categories></Categories>
         <BestSeller></BestSeller>
+        <BottomBanner></BottomBanner>
       </div>
     </div>
   );

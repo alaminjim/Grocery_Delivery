@@ -1,10 +1,8 @@
-import React from "react";
 import { assets } from "../../public/images/assets";
 import { useAppContext } from "../Context/AppContext";
 
 const ProductCard = ({ product }) => {
-  const [count, setCount] = React.useState(0);
-  const { currency, addToCart, removeCartItems, cartItems } = useAppContext();
+  const { addToCart, removeCartItems, cartItems } = useAppContext();
 
   return (
     product && (
@@ -35,12 +33,10 @@ const ProductCard = ({ product }) => {
             <p>(4)</p>
           </div>
           <div className="flex items-end justify-between mt-3">
-            <p className="md:text-xl text-base font-medium text-primary-500">
-              {currency}
-              {product?.offerPrice}{" "}
+            <p className="md:text-xl text-base font-medium text-[#4fbf7a]">
+              ${product?.offerPrice}{" "}
               <span className="text-gray-500/60 md:text-sm text-xs line-through">
-                {currency}
-                {product?.price}
+                ${product?.price}
               </span>
             </p>
             <div
