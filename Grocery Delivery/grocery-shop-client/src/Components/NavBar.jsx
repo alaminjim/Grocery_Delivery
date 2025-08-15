@@ -1,12 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { assets } from "../../public/images/assets";
 import { useAppContext } from "../Context/AppContext";
 
 const NavBar = () => {
   const [open, setOpen] = React.useState(false);
-  const { user, setUser, setShowUserLogin } = useAppContext();
+  const { user, setUser, setShowUserLogin, searchQuery, setSearchQuery } =
+    useAppContext();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (searchQuery.length > 0) {
+      navigate("/all-product");
+    }
+  }, [searchQuery, navigate]);
 
   const logOut = () => {
     setUser(null);
@@ -28,6 +35,7 @@ const NavBar = () => {
             className="py-1.5 w-full bg-transparent outline-none placeholder-gray-500"
             type="text"
             placeholder="Search products"
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
           <img className="w-4 h-4" src={assets.search_icon} alt="search" />
         </div>
