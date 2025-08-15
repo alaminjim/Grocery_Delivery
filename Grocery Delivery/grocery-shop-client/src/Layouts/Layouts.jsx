@@ -1,15 +1,21 @@
 import { Outlet } from "react-router-dom";
 import NavBar from "../Components/NavBar";
 import Footer from "../Components/Footer";
+import { useAppContext } from "../Context/AppContext";
+import Login from "../Components/Login";
 
 const Layouts = () => {
+  const { showUserLogin } = useAppContext();
   return (
     <div>
-      <NavBar></NavBar>
       <div>
-        <Outlet></Outlet>
+        <NavBar></NavBar>
+        <div>
+          <Outlet></Outlet>
+        </div>
+        <Footer></Footer>
       </div>
-      <Footer></Footer>
+      {showUserLogin ? <Login /> : null}
     </div>
   );
 };
