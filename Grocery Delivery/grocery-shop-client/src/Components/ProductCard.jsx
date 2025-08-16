@@ -1,12 +1,25 @@
+import { useNavigate } from "react-router-dom";
 import { assets } from "../../public/images/assets";
 import { useAppContext } from "../Context/AppContext";
 
 const ProductCard = ({ product }) => {
   const { addToCart, removeCartItems, cartItems } = useAppContext();
+  const navigate = useNavigate();
 
   return (
     product && (
-      <div className="border border-gray-500/20 rounded-md md:px-4 px-3 py-2 bg-white min-w-56 max-w-56 w-full">
+      <div
+        onClick={() => {
+          const category =
+            typeof product?.category === "string"
+              ? product.category.toLowerCase()
+              : String(product?.category || "unknown").toLowerCase();
+
+          navigate(`/product/${category}/${product?._id}`);
+          scrollTo(0, 0);
+        }}
+        className="border border-gray-500/20 rounded-md md:px-4 px-3 py-2 bg-white min-w-56 max-w-56 w-full"
+      >
         <div className="group cursor-pointer flex items-center justify-center px-2">
           <img
             className="group-hover:scale-105 transition max-w-26 md:max-w-36"
