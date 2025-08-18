@@ -6,6 +6,7 @@ import ProductCategory from "../Pages/ProductCategory";
 import ProductDetails from "../Pages/ProductDetails";
 import Cart from "../Pages/Cart";
 import AddAddress from "../Pages/AddAddress";
+import MyOrders from "../Pages/MyOrders";
 
 const router = createBrowserRouter([
   {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
       {
         path: "/add-address",
         element: <AddAddress></AddAddress>,
+      },
+      {
+        path: "/my-orders",
+        element: <MyOrders></MyOrders>,
       },
     ],
   },
