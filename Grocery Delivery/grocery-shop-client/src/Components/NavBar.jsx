@@ -5,8 +5,14 @@ import { useAppContext } from "../Context/AppContext";
 
 const NavBar = () => {
   const [open, setOpen] = React.useState(false);
-  const { user, setUser, setShowUserLogin, searchQuery, setSearchQuery } =
-    useAppContext();
+  const {
+    user,
+    setUser,
+    setShowUserLogin,
+    searchQuery,
+    setSearchQuery,
+    getCartCount,
+  } = useAppContext();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -42,13 +48,13 @@ const NavBar = () => {
 
         <div className="relative cursor-pointer ">
           <img
-            onClick={() => navigate("carts")}
+            onClick={() => navigate("cart")}
             className="w-6 opacity-80"
             src={assets.nav_cart_icon}
             alt="cart"
           />
           <button className="absolute -top-2 -right-3 text-xs text-white bg-primary-dull w-[18px] h-[18px] rounded-full">
-            3
+            {getCartCount()}
           </button>
         </div>
 
@@ -80,14 +86,27 @@ const NavBar = () => {
         )}
       </div>
 
-      <button
-        onClick={() => (open ? setOpen(false) : setOpen(true))}
-        aria-label="Menu"
-        className="sm:hidden"
-      >
-        {/* Menu Icon SVG */}
-        <img src={assets.menu_icon} alt="menu" />
-      </button>
+      <div className="flex items-center gap-6 sm:hidden">
+        <div className="relative cursor-pointer ">
+          <img
+            onClick={() => navigate("cart")}
+            className="w-6 opacity-80"
+            src={assets.nav_cart_icon}
+            alt="cart"
+          />
+          <button className="absolute -top-2 -right-3 text-xs text-white bg-primary-dull w-[18px] h-[18px] rounded-full">
+            {getCartCount()}
+          </button>
+        </div>
+
+        <button
+          onClick={() => (open ? setOpen(false) : setOpen(true))}
+          aria-label="Menu"
+        >
+          {/* Menu Icon SVG */}
+          <img src={assets.menu_icon} alt="menu" />
+        </button>
+      </div>
 
       {/* Mobile Menu */}
       {open && (
@@ -99,7 +118,7 @@ const NavBar = () => {
           <NavLink to="/" onClick={() => setOpen(false)}>
             Home
           </NavLink>
-          <NavLink to="/all-products" onClick={() => setOpen(false)}>
+          <NavLink to="/all-product" onClick={() => setOpen(false)}>
             All Products
           </NavLink>
           {user && (
