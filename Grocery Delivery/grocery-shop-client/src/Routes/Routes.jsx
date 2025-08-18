@@ -5,6 +5,7 @@ import AllProducts from "../Pages/AllProducts";
 import ProductCategory from "../Pages/ProductCategory";
 import ProductDetails from "../Pages/ProductDetails";
 import Cart from "../Pages/Cart";
+import AddAddress from "../Pages/AddAddress";
 
 const router = createBrowserRouter([
   {
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
       {
         path: "/cart",
         element: <Cart></Cart>,
+      },
+      {
+        path: "/add-address",
+        element: <AddAddress></AddAddress>,
       },
     ],
   },
