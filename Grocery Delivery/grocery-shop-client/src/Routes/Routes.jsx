@@ -7,6 +7,7 @@ import ProductDetails from "../Pages/ProductDetails";
 import Cart from "../Pages/Cart";
 import AddAddress from "../Pages/AddAddress";
 import MyOrders from "../Pages/MyOrders";
+import SellerDashboard from "../Components/Seller/SellerDashboard";
 
 const router = createBrowserRouter([
   {
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
         element: <MyOrders></MyOrders>,
       },
     ],
+  },
+  {
+    path: "/seller",
+    element: <SellerDashboard></SellerDashboard>,
   },
 ]);
 
