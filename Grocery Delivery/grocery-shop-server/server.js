@@ -4,6 +4,7 @@ import cors from "cors";
 import "dotenv/config";
 import connectDB from "./config/db.js";
 import useRouter from "./routes/userRoute.js";
+import sellerRouter from "./routes/sellerRoute.js";
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -22,6 +23,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api/user", useRouter);
+app.use("/api/seller", sellerRouter);
 
 app.listen(port, () => {
   console.log(`Server is Running port : ${port}`);
