@@ -1,9 +1,10 @@
 import { useAppContext } from "../../Context/AppContext";
+import SellerLayout from "../../Pages/Seller/SellerLayout";
 import SellerLogin from "./SellerLogin";
 
 const SellerDashboard = () => {
   const { isSeller } = useAppContext();
-  return isSeller ? null : <SellerLogin></SellerLogin>;
+  return isSeller ? <SellerLayout></SellerLayout> : <SellerLogin></SellerLogin>;
 };
 
 export default SellerDashboard;

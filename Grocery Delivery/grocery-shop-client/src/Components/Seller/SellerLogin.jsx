@@ -21,7 +21,7 @@ const SellerLogin = () => {
 
   return (
     !isSeller && (
-      <from
+      <form
         className="min-h-screen flex items-center text-sm text-gray-500"
         onSubmit={handleSeller}
       >
@@ -55,7 +55,7 @@ const SellerLogin = () => {
             Login
           </button>
         </div>
-      </from>
+      </form>
     )
   );
 };
