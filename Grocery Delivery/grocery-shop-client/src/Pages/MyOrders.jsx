@@ -8,9 +8,7 @@ const MyOrders = () => {
 
   const fetchMyOrders = async () => {
     try {
-      const { data } = await axios.get("/api/order/user", {
-        withCredentials: true,
-      });
+      const { data } = await axios.get("/api/order/user");
       if (data.success) {
         setMyOrders(data.orders);
       }
@@ -53,7 +51,7 @@ const MyOrders = () => {
               } border-gray-300 flex flex-col md:flex-row md:items-center justify-between p-4 py-5 md:gap-16 w-full max-w-4xl`}
             >
               <div className="flex items-center mb-4 md:mb-0">
-                <div className="bg-[#4fbf7a] p-4 rounded-lg">
+                <div className="bg-[#4fbf7a2a] p-4 rounded-lg">
                   <img
                     className="w-16 h-16"
                     src={item.product.image[0]}
