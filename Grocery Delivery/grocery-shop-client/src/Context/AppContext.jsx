@@ -2,7 +2,6 @@
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import { dummyProducts } from "../../public/images/assets";
 import axios from "axios";
 
 const AppContext = createContext();
@@ -34,8 +33,30 @@ export const AppContextProvider = ({ children }) => {
     }
   };
 
-  const fetchProducts = () => {
-    setProducts(dummyProducts);
+  // fetch user
+  const fetchUser = async () => {
+    try {
+      const { data } = await axios.get("/api/user/is-auth");
+      if (data.success) {
+        setUser(data.user);
+        setCartItems(data.user.cartItems);
+      }
+    } catch {
+      setUser(null);
+    }
+  };
+
+  const fetchProducts = async () => {
+    try {
+      const { data } = await axios.get("/api/product/list");
+      if (data.success) {
+        setProducts(data.product || []);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   const addToCart = (itemId) => {
@@ -100,6 +121,7 @@ export const AppContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    fetchUser();
     fetchSellerLogin();
     fetchProducts();
   }, []);
@@ -122,6 +144,7 @@ export const AppContextProvider = ({ children }) => {
     getCartCount,
     getCartAmount,
     axios,
+    fetchProducts,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

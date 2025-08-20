@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
 import { assets } from "../../public/images/assets";
 import { useAppContext } from "../Context/AppContext";
+import toast from "react-hot-toast";
 
 const NavBar = () => {
   const [open, setOpen] = React.useState(false);
@@ -12,6 +13,7 @@ const NavBar = () => {
     searchQuery,
     setSearchQuery,
     getCartCount,
+    axios,
   } = useAppContext();
   const navigate = useNavigate();
 
@@ -21,10 +23,21 @@ const NavBar = () => {
     }
   }, [searchQuery, navigate]);
 
-  const logOut = () => {
-    setUser(null);
-    navigate("/");
+  const logOut = async () => {
+    try {
+      const { data } = await axios.get("/api/user/logout");
+      if (data.success) {
+        toast.success(data.message);
+        setUser(null);
+        navigate("/");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
+
   return (
     <nav className="flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 py-4 border-b border-gray-300 bg-white relative transition-all">
       <NavLink to="/" onClick={() => setOpen(false)}>
