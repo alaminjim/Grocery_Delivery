@@ -3,8 +3,13 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { dummyProducts } from "../../public/images/assets";
+import axios from "axios";
 
 const AppContext = createContext();
+
+axios.defaults.withCredentials = true;
+
+axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
 
 export const AppContextProvider = ({ children }) => {
   const currency = import.meta.VITE_CURRENCY;
@@ -14,6 +19,20 @@ export const AppContextProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [cartItems, setCartItems] = useState({});
   const [searchQuery, setSearchQuery] = useState({});
+
+  const fetchSellerLogin = async () => {
+    try {
+      const { data } = await axios.get("/api/seller/is-auth");
+      if (data.success) {
+        setIsSeller(true);
+      } else {
+        setIsSeller(false);
+      }
+    } catch (error) {
+      setIsSeller(false);
+      toast.error(error.message);
+    }
+  };
 
   const fetchProducts = () => {
     setProducts(dummyProducts);
@@ -81,6 +100,7 @@ export const AppContextProvider = ({ children }) => {
   };
 
   useEffect(() => {
+    fetchSellerLogin();
     fetchProducts();
   }, []);
 
@@ -101,6 +121,7 @@ export const AppContextProvider = ({ children }) => {
     setSearchQuery,
     getCartCount,
     getCartAmount,
+    axios,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

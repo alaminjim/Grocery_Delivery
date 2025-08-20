@@ -1,3 +1,5 @@
+import jwt from "jsonwebtoken";
+
 export const sellerLogin = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -10,7 +12,7 @@ export const sellerLogin = async (req, res) => {
         expiresIn: "365d",
       });
 
-      res.cookie("sellerTOken", token, {
+      res.cookie("sellerToken", token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: process.env.NODE_ENV === "production" ? "none" : "strict",

@@ -52,7 +52,7 @@ const router = createBrowserRouter([
     element: <SellerDashboard></SellerDashboard>,
     children: [
       {
-        path: "/seller/add-product",
+        path: "/seller",
         element: <AddProduct></AddProduct>,
       },
       {
