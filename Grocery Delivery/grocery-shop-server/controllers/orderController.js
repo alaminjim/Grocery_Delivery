@@ -3,61 +3,58 @@ import Product from "../models/Product.js";
 
 export const placeOrderCOD = async (req, res) => {
   try {
-    const { userId, items, address } = req.body;
-    if (!address || items.length === 0) {
-      return res.json({ success: false, message: "Invalid Data" });
+    const { items, address } = req.body;
+
+    if (!address || !items || items.length === 0) {
+      return res.status(400).json({ success: false, message: "Invalid Data" });
     }
-    // calculate amount using items
 
-    let amount = await items.reduce(async (acc, item) => {
+    // Calculate total amount
+    let amount = 0;
+    for (let item of items) {
       const product = await Product.findById(item.product);
-      return (await acc) + product.offerPrice * item.quantity;
-    }, 0);
+      if (!product) continue;
+      amount += product.offerPrice * item.quantity;
+    }
 
-    // add 2% tax
+    // Add 2% tax
     amount += Math.floor(amount * 0.02);
-    await Order.create({
-      userId,
+
+    const order = await Order.create({
+      userId: req.user.id,
       items,
       amount,
       address,
       paymentType: "COD",
     });
-    return res.json({ success: true, message: "Order placed successfully" });
+
+    res.json({ success: true, message: "Order placed successfully", order });
   } catch (error) {
     console.log(error.message);
-    res.json({ success: false, message: error.message });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
-
-// get-order
 
 export const getUserOrders = async (req, res) => {
   try {
-    const { userId } = req.body;
-    const order = await Order.find({
-      userId,
-      $or: [{ paymentType: "COD" }, { isPaid: true }],
-    })
-      .populate("items.product address")
+    const orders = await Order.find({ userId: req.user.id })
+      .populate("items.product")
       .sort({ createdAt: -1 });
-    res.json({ success: true, order });
+
+    res.json({ success: true, orders });
   } catch (error) {
-    res.json({ success: false, message: error.message });
+    res.status(500).json({ success: false, message: error.message });
   }
 };
 
-// get all order for admin/seller
-
 export const getAllOrders = async (req, res) => {
   try {
-    const order = await Order.find({
-      $or: [{ paymentType: "COD" }, { isPaid: true }],
-    })
-      .populate("items.product address")
+    const orders = await Order.find()
+      .populate("items.product")
       .sort({ createdAt: -1 });
-    res.json({ success: true, order });
+
+    res.json({ success: true, orders });
   } catch (error) {
-    res.json({ success: false, message: error.message });
+    res.status(500).json({ success: false, message: error.message });
   }
 };

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useAppContext } from "../Context/AppContext";
-import { assets, dummyAddress } from "../../public/images/assets";
+import { assets } from "../../public/images/assets";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -12,11 +13,15 @@ const Cart = () => {
     getCartCount,
     updatedCart,
     getCartAmount,
+    axios,
+    user,
+    setCartItems,
   } = useAppContext();
   const [showAddress, setShowAddress] = useState(false);
   const [cartArray, setCartArray] = useState([]);
-  const [address, setAddress] = useState(dummyAddress);
-  const [selectAddress, setSelectAddress] = useState(dummyAddress[0]);
+  const [address, setAddress] = useState([]);
+  const [selectAddress, setSelectAddress] = useState(null);
+  // eslint-disable-next-line no-unused-vars
   const [paymentOption, setPaymentOption] = useState("COD");
 
   const getCart = () => {
@@ -30,7 +35,28 @@ const Cart = () => {
     setCartArray(tempArray);
   };
 
-  const placeOrder = () => {};
+  const getUserAddress = async () => {
+    try {
+      const { data } = await axios.get(`/api/address/get?userId=${user._id}`);
+      if (data.success) {
+        const fetchedAddresses = data.addresses || [];
+        setAddress(fetchedAddresses);
+        if (fetchedAddresses.length > 0) {
+          setSelectAddress(fetchedAddresses[0]);
+        }
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+  useEffect(() => {
+    if (user) {
+      getUserAddress();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   useEffect(() => {
     if (products.length > 0 && cartItems) {
@@ -38,6 +64,35 @@ const Cart = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [products, cartItems]);
+
+  const placeOrder = async () => {
+    try {
+      if (!selectAddress) {
+        return toast.error("Please select an address");
+      }
+
+      // place order in COD
+      if (paymentOption === "COD") {
+        const { data } = await axios.post("/api/order/cod", {
+          userId: user._id,
+          items: cartArray.map((item) => ({
+            product: item._id,
+            quantity: item.quantity,
+          })),
+          address: selectAddress._id,
+        });
+        if (data.success) {
+          toast.success(data.message);
+          setCartItems({});
+          navigate("/my-orders");
+        } else {
+          toast.error(data.message);
+        }
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   return products.length > 0 && cartItems ? (
     <div className="flex flex-col md:flex-row mt-16 lg:ml-52 ml-1">
@@ -180,7 +235,8 @@ const Cart = () => {
           <p className="text-sm font-medium uppercase mt-6">Payment Method</p>
 
           <select
-            onChange={(e) => e.target.value}
+            onChange={(e) => setPaymentOption(e.target.value)}
+            value={paymentOption}
             className="w-full border border-gray-300 bg-white px-3 py-2 mt-2 outline-none"
           >
             <option value="COD">Cash On Delivery</option>
@@ -208,7 +264,10 @@ const Cart = () => {
             <span>${getCartAmount() + (getCartAmount() * 2) / 100}</span>
           </p>
         </div>
-        <button className="w-full py-3 mt-6 cursor-pointer bg-[#4fbf7a] text-white font-medium hover:bg-[#4fbf7ac4] transition">
+        <button
+          onClick={placeOrder}
+          className="w-full py-3 mt-6 cursor-pointer bg-[#4fbf7a] text-white font-medium hover:bg-[#4fbf7ac4] transition"
+        >
           {paymentOption === "COD" ? "Place Order" : "Proceed To CheckOut"}
         </button>
       </div>

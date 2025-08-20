@@ -1,5 +1,9 @@
 import { useState } from "react";
 import { assets } from "../../public/images/assets";
+import { useAppContext } from "../Context/AppContext";
+import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import { useEffect } from "react";
 
 const InputField = ({ type, placeholder, name, handleChange, address }) => {
   return (
@@ -16,6 +20,9 @@ const InputField = ({ type, placeholder, name, handleChange, address }) => {
 };
 
 const AddAddress = () => {
+  const { axios, user } = useAppContext();
+  const navigate = useNavigate();
+
   const [address, setAddress] = useState({
     firstName: "",
     lastName: "",
@@ -37,9 +44,29 @@ const AddAddress = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const { data } = await axios.post("/api/address/add", {
+        userId: user._id,
+        address,
+      });
+      if (data.success) {
+        toast.success(data.message);
+        navigate("/cart");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
+
+  useEffect(() => {
+    if (!user) {
+      navigate("/cart");
+    }
+  }, [user, navigate]);
 
   return (
     <div className="mt-16 mb-16">

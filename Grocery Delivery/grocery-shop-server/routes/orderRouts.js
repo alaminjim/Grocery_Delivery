@@ -10,7 +10,7 @@ import { authSeller } from "../middlewares/authSeller.js";
 const orderRoutes = express.Router();
 
 orderRoutes.post("/cod", authUser, placeOrderCOD);
-orderRoutes.post("/user", authUser, getUserOrders);
+orderRoutes.get("/user", authUser, getUserOrders);
 orderRoutes.get("/seller", authSeller, getAllOrders);
 
 export default orderRoutes;
