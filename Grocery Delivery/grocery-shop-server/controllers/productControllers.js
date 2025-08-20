@@ -1,21 +1,26 @@
 import { v2 as cloudinary } from "cloudinary";
 import Product from "../models/Product.js";
+import fs from "fs";
 
 // add-product
-
-export const addProduct = async (req, res) => {
+export const addProducts = async (req, res) => {
   try {
-    let productData = JSON.parse(req.body.productData);
+    const productData = JSON.parse(req.body.productData);
     const images = req.files;
 
-    let imgURL = await Promise.all(
-      images.map(async (item) => {
-        let result = await cloudinary.uploader.upload(item.path, {
-          resource_type: "image",
+    if (!images || images.length === 0)
+      return res.json({ success: false, message: "No images provided" });
+
+    const imgURL = await Promise.all(
+      images.map(async (file) => {
+        const result = await cloudinary.uploader.upload(file.path, {
+          folder: "products",
         });
+        fs.unlinkSync(file.path); // remove temp file
         return result.secure_url;
       })
     );
+
     await Product.create({ ...productData, image: imgURL });
     res.json({ success: true, message: "Product added" });
   } catch (error) {
@@ -23,10 +28,8 @@ export const addProduct = async (req, res) => {
     res.json({ success: false, message: error.message });
   }
 };
-
-// get-product
-
-export const productList = async (req, res) => {
+// get all products
+export const productLists = async (req, res) => {
   try {
     const product = await Product.find({});
     res.json({ success: true, product });
@@ -36,11 +39,10 @@ export const productList = async (req, res) => {
   }
 };
 
-// get-single-product
-
-export const productById = async (req, res) => {
+// get single product
+export const productByIds = async (req, res) => {
   try {
-    const { id } = req.body;
+    const { id } = req.params; // changed to params
     const product = await Product.findById(id);
     res.json({ success: true, product });
   } catch (error) {
@@ -49,11 +51,10 @@ export const productById = async (req, res) => {
   }
 };
 
-// changeStock
-
-export const changeStock = async (req, res) => {
+// change stock
+export const changeStocks = async (req, res) => {
   try {
-    const { id, inStock } = req.body;
+    const { id, inStock } = req.body; // field name fixed
     await Product.findByIdAndUpdate(id, { inStock });
     res.json({ success: true, message: "Stock Updated" });
   } catch (error) {

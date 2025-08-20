@@ -10,12 +10,14 @@ import productRoute from "./routes/productRoute.js";
 import cartRoutes from "./routes/cartRoute.js";
 import addressRoute from "./routes/AddressRoute.js";
 import orderRoutes from "./routes/orderRouts.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 4000;
 
 await connectDB();
-await connectCloudinary();
+connectCloudinary();
 
 const allowedOrigins = ["http://localhost:5173"];
 
