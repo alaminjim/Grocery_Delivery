@@ -5,8 +5,8 @@ export const sellerLogin = async (req, res) => {
     const { email, password } = req.body;
 
     if (
-      password === process.env.SELLER_password &&
-      email === process.env.SELLER_email
+      password === process.env.SELLER_PASS &&
+      email === process.env.SELLER_EMAIL
     ) {
       const token = jwt.sign({ email }, process.env.JWT_SECRET, {
         expiresIn: "365d",

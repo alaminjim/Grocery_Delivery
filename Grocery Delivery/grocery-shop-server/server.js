@@ -11,6 +11,7 @@ import cartRoutes from "./routes/cartRoute.js";
 import addressRoute from "./routes/AddressRoute.js";
 import orderRoutes from "./routes/orderRouts.js";
 import dotenv from "dotenv";
+import { stripeWebhooks } from "./controllers/orderController.js";
 dotenv.config();
 
 const app = express();
@@ -20,6 +21,8 @@ await connectDB();
 connectCloudinary();
 
 const allowedOrigins = ["http://localhost:5173"];
+
+app.post("/stripe", express.raw({ type: "application/json" }), stripeWebhooks);
 
 // middleware
 app.use(cors({ origin: allowedOrigins, credentials: true }));

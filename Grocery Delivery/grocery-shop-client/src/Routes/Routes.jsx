@@ -7,6 +7,7 @@ import ProductDetails from "../Pages/ProductDetails";
 import Cart from "../Pages/Cart";
 import AddAddress from "../Pages/AddAddress";
 import MyOrders from "../Pages/MyOrders";
+import Loader from "../Components/Loader";
 import SellerDashboard from "../Components/Seller/SellerDashboard";
 import AddProduct from "../Pages/Seller/AddProduct";
 import ProductList from "../Pages/Seller/ProductList";
@@ -14,55 +15,29 @@ import Order from "../Pages/Seller/Order";
 
 const router = createBrowserRouter([
   {
+    path: "/loader",
+    element: <Loader />,
+  },
+  {
     path: "/",
-    element: <Layouts></Layouts>,
+    element: <Layouts />,
     children: [
-      {
-        path: "/",
-        element: <Home></Home>,
-      },
-      {
-        path: "/all-product",
-        element: <AllProducts></AllProducts>,
-      },
-      {
-        path: "/all-product/:category",
-        element: <ProductCategory></ProductCategory>,
-      },
-      {
-        path: "/product/:category/:id",
-        element: <ProductDetails></ProductDetails>,
-      },
-      {
-        path: "/cart",
-        element: <Cart></Cart>,
-      },
-      {
-        path: "/add-address",
-        element: <AddAddress></AddAddress>,
-      },
-      {
-        path: "/my-orders",
-        element: <MyOrders></MyOrders>,
-      },
+      { path: "/", element: <Home /> },
+      { path: "/all-product", element: <AllProducts /> },
+      { path: "/all-product/:category", element: <ProductCategory /> },
+      { path: "/product/:category/:id", element: <ProductDetails /> },
+      { path: "/cart", element: <Cart /> },
+      { path: "/add-address", element: <AddAddress /> },
+      { path: "/my-orders", element: <MyOrders /> },
     ],
   },
   {
     path: "/seller",
-    element: <SellerDashboard></SellerDashboard>,
+    element: <SellerDashboard />,
     children: [
-      {
-        path: "/seller",
-        element: <AddProduct></AddProduct>,
-      },
-      {
-        path: "/seller/product-list",
-        element: <ProductList></ProductList>,
-      },
-      {
-        path: "/seller/order",
-        element: <Order></Order>,
-      },
+      { path: "/seller", element: <AddProduct /> },
+      { path: "/seller/product-list", element: <ProductList /> },
+      { path: "/seller/order", element: <Order /> },
     ],
   },
 ]);

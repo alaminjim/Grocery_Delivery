@@ -48,7 +48,6 @@ const AddAddress = () => {
     e.preventDefault();
     try {
       const { data } = await axios.post("/api/address/add", {
-        userId: user._id,
         address,
       });
       if (data.success) {
@@ -65,8 +64,10 @@ const AddAddress = () => {
   useEffect(() => {
     if (!user) {
       navigate("/cart");
+      toast.error("Create Your Account");
     }
-  }, [user, navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   return (
     <div className="mt-16 mb-16">
