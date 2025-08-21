@@ -109,9 +109,9 @@ const Cart = () => {
   };
 
   return products.length > 0 && cartItems ? (
-    <div className="flex flex-col md:flex-row mt-16 lg:ml-52 ml-1">
+    <div className="flex flex-col md:flex-row mt-16 lg:ml-52 ml-5">
       <div className="flex-1 max-w-4xl">
-        <h1 className="text-3xl font-medium mb-6">
+        <h1 className="text-3xl font-medium mb-6 text-gray-700">
           Shopping Cart{" "}
           <span className="text-sm text-[#4fbf7a]">{getCartCount()} Items</span>
         </h1>

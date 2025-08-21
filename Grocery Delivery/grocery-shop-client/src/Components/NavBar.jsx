@@ -46,6 +46,12 @@ const NavBar = () => {
 
       {/* Desktop Menu */}
       <div className="hidden sm:flex items-center gap-8">
+        <div
+          onClick={() => navigate("/seller")}
+          className="border rounded-full text-xs px-4 py-1 hover:bg-[#4fbf7ae8] hover:border hover:border-[#4fbf7a] hover:text-white border-gray-300 text-gray-600"
+        >
+          Seller Dashboard
+        </div>
         <NavLink to="/">Home</NavLink>
         <NavLink to="/all-product">All Products</NavLink>
 
@@ -124,39 +130,61 @@ const NavBar = () => {
       {/* Mobile Menu */}
       {open && (
         <div
-          className={`${
-            open ? "flex" : "hidden"
-          } absolute top-[60px] left-0 w-full bg-white shadow-md py-4 flex-col items-start gap-2 px-5 text-sm md:hidden`}
+          className="fixed inset-0 z-50 bg-black/30 flex justify-start items-start md:hidden"
+          onClick={() => setOpen(false)}
         >
-          <NavLink to="/" onClick={() => setOpen(false)}>
-            Home
-          </NavLink>
-          <NavLink to="/all-product" onClick={() => setOpen(false)}>
-            All Products
-          </NavLink>
-          {user && (
-            <NavLink to="/my-orders" onClick={() => setOpen(false)}>
-              My Orders
+          <div
+            className="bg-white w-64 p-6 flex flex-col gap-4 h-full shadow-lg"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Logo */}
+            <div className="mb-6">
+              <h1 className="text-2xl font-bold text-green-600">GreenCart</h1>
+            </div>
+
+            {/* Nav Links */}
+            <NavLink
+              to="/"
+              onClick={() => setOpen(false)}
+              className="py-2 text-gray-700 hover:text-green-500 transition"
+            >
+              Home
             </NavLink>
-          )}
-          {!user ? (
-            <button
-              onClick={() => {
-                setOpen(false);
-                setShowUserLogin(true);
-              }}
-              className="cursor-pointer px-6 py-2 mt-2  bg-primary-dull hover:bg-primary-dull transition text-white rounded-full text-sm"
+            <NavLink
+              to="/all-product"
+              onClick={() => setOpen(false)}
+              className="py-2 text-gray-700 hover:text-green-500 transition"
             >
-              Login
-            </button>
-          ) : (
-            <button
-              onClick={logOut}
-              className="cursor-pointer px-6 py-2 mt-2  bg-primary-dull hover:bg-primary-dull transition text-white rounded-full text-sm"
+              All Products
+            </NavLink>
+            <NavLink
+              to="/seller"
+              onClick={() => setOpen(false)}
+              className="py-2 text-gray-700 hover:text-green-500 transition"
             >
-              Logout
-            </button>
-          )}
+              Seller Dashboard
+            </NavLink>
+
+            {/* Login / Logout Button */}
+            {!user ? (
+              <button
+                onClick={() => {
+                  setOpen(false);
+                  setShowUserLogin(true);
+                }}
+                className="px-6 py-2 mt-4 bg-green-500 text-white rounded-full hover:bg-green-600 transition"
+              >
+                Login
+              </button>
+            ) : (
+              <button
+                onClick={logOut}
+                className="px-6 py-2 mt-4 bg-green-500 text-white rounded-full hover:bg-green-600 transition"
+              >
+                Logout
+              </button>
+            )}
+          </div>
         </div>
       )}
     </nav>

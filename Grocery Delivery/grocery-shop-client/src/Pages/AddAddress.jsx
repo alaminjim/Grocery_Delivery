@@ -70,7 +70,7 @@ const AddAddress = () => {
   }, [user]);
 
   return (
-    <div className="mt-16 mb-16">
+    <div className="mt-16 mb-16 ml-5">
       <p className="text-2xl md:text-3xl text-gray-500 lg:ml-32">
         Add Shipping{" "}
         <span className="font-semibold text-[#4fbf7a]">Address</span>
