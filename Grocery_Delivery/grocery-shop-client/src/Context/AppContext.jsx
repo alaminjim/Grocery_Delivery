@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
 /* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useEffect, useState } from "react";
@@ -18,6 +19,7 @@ export const AppContextProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState({});
   const [searchQuery, setSearchQuery] = useState({});
   const [loading, setLoading] = useState(true);
+  const [cartArray, setCartArray] = useState([]);
 
   const fetchSellerLogin = async () => {
     try {
@@ -96,7 +98,7 @@ export const AppContextProvider = ({ children }) => {
     });
 
     // update cartArray
-    setCartArray((prev) => prev.filter((item) => item._id !== itemId));
+    setCartItems((prev) => prev.filter((item) => item._id !== itemId));
 
     toast.success("Removed From Cart");
   };
@@ -114,10 +116,10 @@ export const AppContextProvider = ({ children }) => {
   // get cart total amount
   const getCartAmount = () => {
     let totalAmount = 0;
-    for (const items in cartItems) {
-      let cartInfo = products.find((product) => product._id === items);
-      if (cartItems[items] > 0) {
-        totalAmount += cartInfo.offerPrice * cartItems[items];
+    for (const itemId in cartItems) {
+      const cartInfo = products.find((product) => product._id === itemId);
+      if (cartInfo && cartItems[itemId] > 0) {
+        totalAmount += cartInfo.offerPrice * cartItems[itemId];
       }
     }
     return Math.floor(totalAmount * 100) / 100;

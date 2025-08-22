@@ -47,3 +47,5 @@ app.use("/api/order", orderRoutes);
 app.listen(port, () => {
   console.log(`Server is Running port : ${port}`);
 });
+
+export default app;

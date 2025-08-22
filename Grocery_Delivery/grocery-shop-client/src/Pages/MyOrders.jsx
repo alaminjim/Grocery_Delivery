@@ -19,6 +19,7 @@ const MyOrders = () => {
 
   useEffect(() => {
     if (user) fetchMyOrders();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   if (!myOrders.length)
@@ -42,40 +43,44 @@ const MyOrders = () => {
             <span>TotalAmount: ${order.amount}</span>
           </p>
 
-          {order.items.map((item, i) => (
-            <div
-              key={i}
-              className={`relative bg-white text-gray-500/70 ${
-                order.items.length !== i + 1 && "border-b"
-              } border-gray-300 flex flex-col md:flex-row md:items-center justify-between p-4 py-5 md:gap-16 w-full max-w-4xl`}
-            >
-              <div className="flex items-center mb-4 md:mb-0">
-                <div className="bg-[#4fbf7a2a] p-4 rounded-lg">
-                  <img
-                    className="w-16 h-16"
-                    src={item.product.image[0]}
-                    alt={item.product.name}
-                  />
-                </div>
-                <div className="ml-4">
-                  <h2 className="text-xl font-medium text-gray-800">
-                    {item.product.name}
-                  </h2>
-                  <p>Category: {item.product.category}</p>
-                </div>
-              </div>
+          {order.items.map((item, i) => {
+            if (!item.product) return null;
 
-              <div className="flex flex-col justify-center md:ml-8 mb-4 md:mb-0">
-                <p>Quantity: {item.quantity}</p>
-                <p>Status: {order.status}</p>
-                <p>Date: {new Date(order.createdAt).toLocaleDateString()}</p>
-              </div>
+            return (
+              <div
+                key={i}
+                className={`relative bg-white text-gray-500/70 ${
+                  order.items.length !== i + 1 && "border-b"
+                } border-gray-300 flex flex-col md:flex-row md:items-center justify-between p-4 py-5 md:gap-16 w-full max-w-4xl`}
+              >
+                <div className="flex items-center mb-4 md:mb-0">
+                  <div className="bg-[#4fbf7a2a] p-4 rounded-lg">
+                    <img
+                      className="w-16 h-16 object-cover"
+                      src={item.product?.image?.[0] || "/placeholder.png"}
+                      alt={item.product?.name || "No name"}
+                    />
+                  </div>
+                  <div className="ml-4">
+                    <h2 className="text-xl font-medium text-gray-800">
+                      {item.product?.name || "Unknown Product"}
+                    </h2>
+                    <p>Category: {item.product?.category || "N/A"}</p>
+                  </div>
+                </div>
 
-              <p className="text-lg text-[#4fbf7a] font-medium">
-                Amount: ${item.product.offerPrice * item.quantity}
-              </p>
-            </div>
-          ))}
+                <div className="flex flex-col justify-center md:ml-8 mb-4 md:mb-0">
+                  <p>Quantity: {item.quantity}</p>
+                  <p>Status: {order.status}</p>
+                  <p>Date: {new Date(order.createdAt).toLocaleDateString()}</p>
+                </div>
+
+                <p className="text-lg text-[#4fbf7a] font-medium">
+                  Amount: ${(item.product?.offerPrice || 0) * item.quantity}
+                </p>
+              </div>
+            );
+          })}
         </div>
       ))}
     </div>

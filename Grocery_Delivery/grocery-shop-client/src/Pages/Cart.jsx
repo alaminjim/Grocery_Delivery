@@ -28,7 +28,7 @@ const Cart = () => {
     let tempArray = [];
     for (const key in cartItems) {
       const product = products.find((item) => item._id === key);
-      if (product) {
+      if (product && cartItems[key] > 0) {
         tempArray.push({ ...product, quantity: cartItems[key] });
       }
     }
