@@ -9,7 +9,7 @@
       }
     }
   ],
-  "route": [
+  "routes": [
     {
       "src": "/(.*)",
       "dest": "server.js"
