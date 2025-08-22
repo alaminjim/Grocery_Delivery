@@ -7,7 +7,6 @@ import axios from "axios";
 const AppContext = createContext();
 
 axios.defaults.withCredentials = true;
-
 axios.defaults.baseURL = import.meta.env.VITE_BACKEND_URL;
 
 export const AppContextProvider = ({ children }) => {

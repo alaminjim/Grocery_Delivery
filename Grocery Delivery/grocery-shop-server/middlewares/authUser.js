@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 
-const authUser = async (req, res, next) => {
+const authUser = (req, res, next) => {
   const { token } = req.cookies;
 
   if (!token) {
@@ -9,7 +9,7 @@ const authUser = async (req, res, next) => {
 
   try {
     const tokenDecoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = { id: tokenDecoded._id || tokenDecoded.id };
+    req.user = { id: tokenDecoded.id }; // শুধু id নেওয়া
     next();
   } catch (error) {
     console.log(error.message);

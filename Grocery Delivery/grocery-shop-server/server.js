@@ -17,7 +17,7 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 4000;
 
-await connectDB();
+connectDB();
 connectCloudinary();
 
 app.post("/stripe", express.raw({ type: "application/json" }), stripeWebhooks);
@@ -25,10 +25,11 @@ app.post("/stripe", express.raw({ type: "application/json" }), stripeWebhooks);
 // middleware
 app.use(
   cors({
-    origin: "http://localhost:5173", // frontend URL
+    origin: "http://localhost:5173",
     credentials: true,
   })
 );
+
 app.use(express.json());
 app.use(cookieParser());
 
