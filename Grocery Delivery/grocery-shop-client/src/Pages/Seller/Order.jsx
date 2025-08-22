@@ -7,14 +7,11 @@ const Order = () => {
   const [orders, setOrders] = useState([]);
   const { axios } = useAppContext();
 
-  const fetchOrders = async () => {
+  const fetchMyOrders = async () => {
     try {
-      const { data } = await axios.get("/api/order/seller");
+      const { data } = await axios.get("/api/order/user");
       if (data.success) {
         setOrders(data.orders);
-        console.log(orders);
-      } else {
-        toast.error(data.message);
       }
     } catch (error) {
       toast.error(error.message);
@@ -22,8 +19,7 @@ const Order = () => {
   };
 
   useEffect(() => {
-    fetchOrders();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    fetchMyOrders();
   }, []);
 
   return (
