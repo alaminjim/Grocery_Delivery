@@ -12,12 +12,15 @@ import SellerDashboard from "../Components/Seller/SellerDashboard";
 import AddProduct from "../Pages/Seller/AddProduct";
 import ProductList from "../Pages/Seller/ProductList";
 import Order from "../Pages/Seller/Order";
+import PrivateRoute from "./PrivateRoute";
+import Login from "../Components/Login";
 
 const router = createBrowserRouter([
   {
     path: "/loader",
     element: <Loader />,
   },
+
   {
     path: "/",
     element: <Layouts />,
@@ -25,10 +28,42 @@ const router = createBrowserRouter([
       { path: "/", element: <Home /> },
       { path: "/all-product", element: <AllProducts /> },
       { path: "/all-product/:category", element: <ProductCategory /> },
-      { path: "/product/:category/:id", element: <ProductDetails /> },
-      { path: "/cart", element: <Cart /> },
-      { path: "/add-address", element: <AddAddress /> },
-      { path: "/my-orders", element: <MyOrders /> },
+      {
+        path: "/product/:category/:id",
+        element: (
+          <PrivateRoute>
+            <ProductDetails />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/cart",
+        element: (
+          <PrivateRoute>
+            <Cart />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/add-address",
+        element: (
+          <PrivateRoute>
+            <AddAddress />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/my-orders",
+        element: (
+          <PrivateRoute>
+            <MyOrders />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: "/login",
+        element: <Login></Login>,
+      },
     ],
   },
   {

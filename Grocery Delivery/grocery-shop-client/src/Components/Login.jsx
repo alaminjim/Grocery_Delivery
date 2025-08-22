@@ -1,7 +1,6 @@
 import React from "react";
 import { useAppContext } from "../Context/AppContext";
 import { useNavigate } from "react-router-dom";
-import toast from "react-hot-toast";
 
 const Login = () => {
   const [state, setState] = React.useState("login");
@@ -25,11 +24,9 @@ const Login = () => {
         navigate("/");
         setUser(data.user);
         setShowUserLogin(false);
-      } else {
-        toast.error(data.message);
       }
     } catch (error) {
-      toast.error(error.message);
+      console.log(error);
     }
   };
 

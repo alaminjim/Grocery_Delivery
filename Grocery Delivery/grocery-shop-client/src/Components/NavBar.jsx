@@ -25,7 +25,9 @@ const NavBar = () => {
 
   const logOut = async () => {
     try {
-      const { data } = await axios.get("/api/user/logout");
+      const { data } = await axios.get("/api/user/logout", {
+        withCredentials: true,
+      });
       if (data.success) {
         toast.success(data.message);
         setUser(null);
@@ -134,12 +136,12 @@ const NavBar = () => {
           onClick={() => setOpen(false)}
         >
           <div
-            className="bg-white w-64 p-6 flex flex-col gap-4 h-full shadow-lg"
+            className="bg-white w-64 p-6 flex flex-col gap-2 h-full shadow-lg"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Logo */}
-            <div className="mb-6">
-              <h1 className="text-2xl font-bold text-green-600">GreenCart</h1>
+            <div className="mr-6">
+              <img className="w-38" src={assets.logo} alt="" />
             </div>
 
             {/* Nav Links */}
